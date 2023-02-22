@@ -47,14 +47,14 @@ jobs:
           cat .env
 
       # - name: build server files
-      #   working-directory: ./
-      #   run: |
-      #     yarn
-      #     yarn run build
+        working-directory: ./
+        run: |
+          yarn
+          yarn run build
 
       # To install npm dependencies
-      - name: Install Dependencies
-        run: npm install
+      # - name: Install Dependencies
+      #   run: npm install
 
       # To build NestJS Application
       - name: Build a Nest.js Application
