@@ -1,0 +1,51 @@
+name: deploy
+
+on:
+  push:
+    branches: [dev] # Workflow is triggered when you push to these branches
+  pull_request:
+    branches: [dev]
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04 # ex) EC2 instance
+
+    strategy:
+      matrix:
+        node-version: [16.15.1]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    # What you will do after (repository code -> CI server)
+    steps:
+      - name: Checkout source code.
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }} # install Node.js with the version you wrote above
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Check Npm -v
+        run: npm -v
+
+      - name: create env file
+        working-directory: ./
+        run: |
+          pwd
+          touch .env
+          echo NODE_SERVER_PORT=${{ secrets.NODE_SERVER_PORT }} >> .env
+          echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> .env
+          echo HTTPS_PORT=${{ secrets.HTTPS_PORT }} >> .env
+          echo HTTP_PORT=${{ secrets.HTTP_PORT }} >> .env
+          echo RDS_HOST=${{ secrets.RDS_HOST }} >> .env
+          echo RDS_PORT=${{ secrets.RDS_PORT }} >> .env
+          echo RDS_USERNAME=${{ secrets.RDS_USERNAME }} >> .env
+          echo RDS_PASSWORD=${{ secrets.RDS_PASSWORD }} >> .env
+          echo RDS_DATABASE_NAME=${{ secrets.RDS_DATABASE_NAME }} >> .env
+          cat .env
+
+      - name: build server files
+        working-directory: ./
+        run: |
+          npm
+          npm install

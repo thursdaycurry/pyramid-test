@@ -12,7 +12,7 @@ class TypeOrmConfig {
             password: configService.get('RDS_PASSWORD'),
             database: configService.get('RDS_DATABASE_NAME'),
             entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-            synchronize: false,
+            synchronize: true,
             logging: false,
         };
     }

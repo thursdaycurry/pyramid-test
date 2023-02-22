@@ -18,17 +18,27 @@ export class RafflesService {
 
   // 래플 리스트 전체 조회
   async findAll() {
+    // const result = await this.raffleRepository.find({
+    //   where: { isClosed: false },
+    //   relations: {
+    //     product: true,
+    //     bid: true,
+    //     user: true,
+    //   },
+    // });
+    // const count = result.length;
+    // return { count: count, data: result };
+
     const result = await this.raffleRepository.find({
-      where: { isClosed: false },
-      relations: {
-        product: true,
-        bid: true,
-        user: true,
-      },
+      take: 10,
+      order: {
+        dateEnd: 'DESC'
+      }
     });
     const count = result.length;
     return { count: count, data: result };
   }
+
   // 특정 상품 상세 조회
   async findOne(id: number) {
     const currentRaffle = await this.raffleRepository.findOne({

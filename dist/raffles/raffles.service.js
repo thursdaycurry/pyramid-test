@@ -27,12 +27,10 @@ let RafflesService = class RafflesService {
     }
     async findAll() {
         const result = await this.raffleRepository.find({
-            where: { isClosed: false },
-            relations: {
-                product: true,
-                bid: true,
-                user: true,
-            },
+            take: 10,
+            order: {
+                dateEnd: 'DESC'
+            }
         });
         const count = result.length;
         return { count: count, data: result };
