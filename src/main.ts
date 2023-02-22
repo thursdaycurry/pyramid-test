@@ -23,7 +23,7 @@ async function bootstrap() {
     : await NestFactory.create<NestExpressApplication>(AppModule, {
         httpsOptions,
       });
-
+ 
   //* Static Assets
   app.useStaticAssets(join(__dirname, '..', 'public'));
 
