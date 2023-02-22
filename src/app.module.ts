@@ -21,7 +21,7 @@ import { BidsModule } from './bids/bids.module';
     UsersModule,
     ProductModule,
     BidsModule,
-  ],
+  ], 
   controllers: [ProductsController, RafflesController, UsersController, AppController],
   providers: [],
 })
