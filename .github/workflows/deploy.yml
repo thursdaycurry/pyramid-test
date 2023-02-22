@@ -15,12 +15,14 @@ jobs:
         node-version: [14.21.3]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
-    # What you will do after (repository code -> CI server)
+    # To do list after with repository code in CI server
     steps:
+      # Step to enable workflow to approach to our repository
       - name: Checkout source code.
         uses: actions/checkout@v2
 
-      - name: Use Node.js ${{ matrix.node-version }} # install Node.js with the version you wrote above
+      # Set specific Node version
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
@@ -44,35 +46,41 @@ jobs:
           echo RDS_DATABASE_NAME=${{ secrets.RDS_DATABASE_NAME }} >> .env
           cat .env
 
-      - name: build server files
-        working-directory: ./
-        run: |
-          yarn
-          yarn run build
+      # - name: build server files
+      #   working-directory: ./
+      #   run: |
+      #     yarn
+      #     yarn run build
 
-      ################## CD 구축 단계에서 추가 부분
+      # To install npm dependencies
+      - name: Install Dependencies
+        run: npm install
 
-      # 리포지토리 압축
+      # To build NestJS Application
+      - name: Build a Nest.js Application
+        name: npm run build
+        shell: bash
+
+      # -------------------- CI --------------------
+      # -------------------- CD --------------------
+
+      # Zip our Repository
       - name: zip file
-        # run: zip -r pyramid.zip ./dist ./scripts ./appspec.yml ./.env ./package.json
-        # run: zip -r pyramid.zip . -x "node_modules/*" "coverage/*" "src/*" "test/*" "README.md" "*.git*" # node_module 등 파일들은 제외한 나머지 모두 압축
-        # test 005
-        # run: zip -r pyramid.zip . ./dist ./src ./test -x "node_modules/*" "coverage/*" "src/*" "test/*" "README.md" "*.git*"
-        # test 006
         run: zip -r pyramid.zip ./dist ./scripts ./src ./test ./.env ./appspec.yml ./nest-cli.json ./package-lock.json ./package.json ./tsconfig.build.json ./tsconfig.json ./ -x "node_modules/*" "coverage/*" "*.git*"
 
-      # S3 접근을 위한 IAM 사용자 키값등록
+      # Tell AWS that we are qualified person for this with IAM User
       - name: AWS configure credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-northeast-2
+          aws-region: ap-northeast-2 
 
-      # S3에 압축 파일을 옮겨줌
+      # Upload zip file you created above to S3
       - name: upload to S3
         run: aws s3 cp --region ap-northeast-2 ./pyramid.zip s3://pyramid-build/deploy/
 
+      # Request codeDeploy to create deployment
       # AWS CodeDeploy 실행 시 가장 아랫줄 지정한 곳에 압축 파일 푼 뒤, CodeDeploy와 연결된 EC2 인스턴스에 배포
       - name: deploy with AWS codeDeploy
         run: aws deploy create-deployment
