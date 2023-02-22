@@ -47,5 +47,5 @@ jobs:
       - name: build server files
         working-directory: ./
         run: |
-          npm
-          npm install
+          yarn
+          yarn run build
