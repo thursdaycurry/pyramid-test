@@ -17,5 +17,5 @@ export class BidsService {
 
   remove(bidId: number) {
     return this.bidRepository.delete({ bidId });
-  }
+  } 
 }

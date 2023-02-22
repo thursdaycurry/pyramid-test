@@ -2,9 +2,9 @@ name: deploy
 
 on:
   push:
-    branches: [dev] # Workflow is triggered when you push to these branches
+    branches: [main] # Workflow is triggered when you push to these branches
   pull_request:
-    branches: [dev]
+    branches: [main]
 
 jobs:
   build:
