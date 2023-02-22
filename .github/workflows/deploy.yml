@@ -53,7 +53,7 @@ jobs:
       ################## CD 구축 단계에서 추가 부분
       # 명시한 파일, 폴더들을 pyramid.zip 파일로 압축
       - name: zip file
-        run: zip -r pyramid.zip ./dist ./scripts ./src ./test ./appspec.yml ./.env ./package.json ./nest-cli.json ./package-lock.json ./package.json ./tsconfig.build.json ./tsconfig.json
+        run: zip -r pyramid.zip . -x "node_modules/*" "coverage/*" "src/*" "test/*" "README.md" "*.git*"
         # run: zip -r pyramid.zip ./dist ./scripts ./appspec.yml ./.env ./package.json
 
       # S3 접근을 위한 IAM 사용자 키값등록
