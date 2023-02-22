@@ -45,14 +45,14 @@ jobs:
           echo RDS_PASSWORD=${{ secrets.RDS_PASSWORD }} >> .env
           echo RDS_DATABASE_NAME=${{ secrets.RDS_DATABASE_NAME }} >> .env
           cat .env
-        
+
         # To install npm dependencies
       - name: Install Dependencies
         run: npm install
 
       # To build NestJS Application
       - name: Build a Nest.js Application
-        name: npm run build
+        run: npm run build
         shell: bash
 
       # Zip our Repository
@@ -65,7 +65,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-northeast-2 
+          aws-region: ap-northeast-2
 
       # Upload zip file you created above to S3
       - name: upload to S3

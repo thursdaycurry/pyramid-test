@@ -52,7 +52,7 @@ async function bootstrap() {
   if (isLocal)
     await app.listen(process.env.HTTP_PORT, () => {
       Logger.log(`${process.env.HTTP_PORT} 포트 실행 HTTP`);
-    });
+    }); 
   if (!isLocal)
     await app.listen(process.env.HTTPS_PORT, () => {
       Logger.log(`${process.env.HTTPS_PORT} 포트 실행 hTTPS`);
