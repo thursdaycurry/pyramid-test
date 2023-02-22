@@ -45,24 +45,15 @@ jobs:
           echo RDS_PASSWORD=${{ secrets.RDS_PASSWORD }} >> .env
           echo RDS_DATABASE_NAME=${{ secrets.RDS_DATABASE_NAME }} >> .env
           cat .env
-
-      # - name: build server files
-        working-directory: ./
-        run: |
-          yarn
-          yarn run build
-
-      # To install npm dependencies
-      # - name: Install Dependencies
-      #   run: npm install
+        
+        # To install npm dependencies
+      - name: Install Dependencies
+        run: npm install
 
       # To build NestJS Application
       - name: Build a Nest.js Application
         name: npm run build
         shell: bash
-
-      # -------------------- CI --------------------
-      # -------------------- CD --------------------
 
       # Zip our Repository
       - name: zip file
