@@ -30,6 +30,11 @@ let RafflesService = class RafflesService {
             take: 10,
             order: {
                 dateEnd: 'DESC'
+            },
+            relations: {
+                product: true,
+                bid: true,
+                user: true
             }
         });
         const count = result.length;
