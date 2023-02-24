@@ -74,9 +74,7 @@ __decorate([
     __metadata("design:type", product_entity_1.ProductEntity)
 ], RaffleEntity.prototype, "product", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => bid_entity_1.BidEntity, bid => bid.raffle, {
-        eager: true,
-    }),
+    (0, typeorm_1.OneToMany)(() => bid_entity_1.BidEntity, bid => bid.raffle, {}),
     (0, typeorm_1.JoinColumn)({ name: 'bidId' }),
     __metadata("design:type", Array)
 ], RaffleEntity.prototype, "bid", void 0);

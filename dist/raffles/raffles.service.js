@@ -26,19 +26,39 @@ let RafflesService = class RafflesService {
         return this.raffleRepository.save(raffle);
     }
     async findAll() {
-        const result = await this.raffleRepository.find({
-            take: 10,
-            order: {
-                dateEnd: 'DESC'
-            },
-            relations: {
-                product: true,
-                bid: true,
-                user: true
-            }
-        });
-        const count = result.length;
-        return { count: count, data: result };
+        const result = await this.raffleRepository
+            .createQueryBuilder('raffle')
+            .leftJoinAndSelect('raffle.product', 'product')
+            .leftJoinAndSelect('raffle.bid', 'bid')
+            .select([
+            'raffle.raffleId',
+            'product.productImage',
+            'product.productColor',
+            'product.productModel',
+            'product.productName',
+            'product.releasePrice',
+            'raffle.dateEnd',
+            'bid.bidId'
+        ])
+            .orderBy('raffle.dateEnd', 'DESC')
+            .addOrderBy('raffle.raffleId', 'DESC')
+            .take(10)
+            .getMany();
+        return result;
+    }
+    async test() {
+        const result = await this.raffleRepository
+            .createQueryBuilder('raffle')
+            .where((qb) => {
+            const subQuery = qb
+                .subQuery()
+                .select('raffle.raffleId')
+                .where('raffle.closedPrice > :price', { price: 200000 })
+                .getQuery();
+            return 'raffle.raffleId IN ' + subQuery;
+        })
+            .getMany();
+        return result;
     }
     async findOne(id) {
         const currentRaffle = await this.raffleRepository.findOne({

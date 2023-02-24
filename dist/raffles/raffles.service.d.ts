@@ -4,10 +4,8 @@ export declare class RafflesService {
     private readonly raffleRepository;
     constructor(raffleRepository: Repository<RaffleEntity>);
     create(raffle: any): Promise<any>;
-    findAll(): Promise<{
-        count: number;
-        data: RaffleEntity[];
-    }>;
+    findAll(): Promise<RaffleEntity[]>;
+    test(): Promise<RaffleEntity[]>;
     findOne(id: number): Promise<{
         data: RaffleEntity;
         raffleHistory: RaffleEntity[];

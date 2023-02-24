@@ -63,6 +63,7 @@ export class ProductsService {
     // return allProducts
   // }
 
+
   // 특정 상품 상세 조회
   findOne(productId: number) {
     return this.productRepository.findOne({ where: { productId: productId } });

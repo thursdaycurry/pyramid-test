@@ -6,10 +6,8 @@ export declare class RafflesController {
     logger: Logger;
     constructor(rafflesService: RafflesService);
     create(createRaffleDto: any): Promise<any>;
-    findAll(): Promise<{
-        count: number;
-        data: import("./entities/raffle.entity").RaffleEntity[];
-    }>;
+    findAll(): Promise<import("./entities/raffle.entity").RaffleEntity[]>;
+    test(): Promise<import("./entities/raffle.entity").RaffleEntity[]>;
     findOne(id: any): Promise<{
         data: import("./entities/raffle.entity").RaffleEntity;
         raffleHistory: import("./entities/raffle.entity").RaffleEntity[];

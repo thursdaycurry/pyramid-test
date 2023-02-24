@@ -34,6 +34,11 @@ export class RafflesController {
     return this.rafflesService.findAll();
   }
 
+  @Get('/test')
+  test() {
+    return this.rafflesService.test();
+  }
+
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id) {
     return this.rafflesService.findOne(id);
