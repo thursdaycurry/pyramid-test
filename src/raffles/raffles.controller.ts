@@ -34,11 +34,10 @@ export class RafflesController {
     return this.rafflesService.findAll();
   }
 
-  @Get('/test')
-  test() {
-    return this.rafflesService.test();
+  @Get('fromCache')
+  findAllWithRedis() {
+    return this.rafflesService.findAllWithRedis();
   }
-
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id) {
     return this.rafflesService.findOne(id);

@@ -1,19 +1,52 @@
-import { Injectable } from '@nestjs/common';
+import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 import { CreateRaffleDto } from './dto/create-raffle.dto';
 import { UpdateRaffleDto } from './dto/update-raffle.dto';
 import { Repository } from 'typeorm';
 import { RaffleEntity } from './entities/raffle.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class RafflesService {
   constructor(
     @InjectRepository(RaffleEntity) private readonly raffleRepository: Repository<RaffleEntity>,
-  ) {}
+    @Inject(CACHE_MANAGER) private cacheManager: Cache) { }
 
   create(raffle) {
     console.log(`raffle create: ${JSON.stringify(raffle)}`);
     return this.raffleRepository.save(raffle);
+  }
+
+  // raffle - findAll v0.1
+  async findAllWithRedis() {
+    const cachedResult = await this.cacheManager.get('findAllRaffles');
+    if (cachedResult) {
+      console.log(`Raffle result from Redis :D `)
+      return cachedResult;
+    }
+    const result = await this.raffleRepository
+      .createQueryBuilder('raffle')
+      .leftJoinAndSelect('raffle.product', 'product')
+      .leftJoinAndSelect('raffle.bid', 'bid')
+      .select([
+        'raffle.raffleId',
+        'product.productImage',
+        'product.productColor',
+        'product.productModel',
+        'product.productName',
+        'product.releasePrice',
+        'raffle.dateEnd',
+        'bid.bidId'
+      ])
+      .orderBy('raffle.dateEnd', 'DESC')
+      .addOrderBy('raffle.raffleId', 'DESC')
+      .take(10)
+      .getMany();
+    
+    await this.cacheManager.set('findAllRaffles', result)
+
+    console.log(`normal result`)
+    return result;
   }
 
   // 래플 리스트 전체 조회

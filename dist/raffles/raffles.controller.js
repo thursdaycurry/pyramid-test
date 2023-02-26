@@ -29,8 +29,8 @@ let RafflesController = class RafflesController {
         this.logger.log(`컨트롤러 findAll ${this.findAllcount}번 요청됨`);
         return this.rafflesService.findAll();
     }
-    test() {
-        return this.rafflesService.test();
+    findAllWithRedis() {
+        return this.rafflesService.findAllWithRedis();
     }
     findOne(id) {
         return this.rafflesService.findOne(id);
@@ -53,11 +53,11 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], RafflesController.prototype, "findAll", null);
 __decorate([
-    (0, common_1.Get)('/test'),
+    (0, common_1.Get)('fromCache'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
-], RafflesController.prototype, "test", null);
+], RafflesController.prototype, "findAllWithRedis", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),

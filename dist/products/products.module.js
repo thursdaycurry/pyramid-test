@@ -13,11 +13,20 @@ const products_controller_1 = require("./products.controller");
 const typeorm_1 = require("@nestjs/typeorm");
 const product_entity_1 = require("./entities/product.entity");
 const raffle_entity_1 = require("../raffles/entities/raffle.entity");
+const redisStore = require("cache-manager-ioredis");
 let ProductModule = class ProductModule {
 };
 ProductModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([product_entity_1.ProductEntity, raffle_entity_1.RaffleEntity])],
+        imports: [
+            typeorm_1.TypeOrmModule.forFeature([product_entity_1.ProductEntity, raffle_entity_1.RaffleEntity]),
+            common_1.CacheModule.register({
+                store: redisStore,
+                host: 'localhost',
+                port: 6379,
+                max: 100,
+            }),
+        ],
         controllers: [products_controller_1.ProductsController],
         providers: [products_service_1.ProductsService],
         exports: [products_service_1.ProductsService],

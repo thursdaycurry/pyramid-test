@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { CacheModule, Module } from '@nestjs/common';
 import { ProductsController } from './products/products.controller';
 import { RafflesController } from './raffles/raffles.controller';
 import { UsersController } from './users/users.controller';

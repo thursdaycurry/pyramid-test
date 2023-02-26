@@ -1,15 +1,32 @@
-import { Injectable } from '@nestjs/common';
-import { CreateProductDto } from './dto/create-product.dto';
+import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { ProductEntity } from './entities/product.entity';
 import { Repository } from 'typeorm';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectRepository(ProductEntity) private productRepository: Repository<ProductEntity>,
-  ) {}
+    @Inject(CACHE_MANAGER) private cacheManager: Cache) { }
+  
+  // Test for Redis Caching
+  async getOrSetCache() {
+    // const savedTime = await this.cacheManager.get('time');
+    // if (savedTime) {
+    //   console.log(`savedTime: ${savedTime}`)
+    //   return 'Redis) saved time : ' + savedTime;
+    // }
+    // const now = new Date().getTime();
+    // await this.cacheManager.set('time', now);
+    // return 'save new time : ' + now;
+
+    // return new Promise((resolve, reject) => {
+    //   this.cacheManager.get('time', )
+    // })
+
+  }
 
   // 상품 등록 : CreateProductDto
   create(product) {
@@ -22,6 +39,20 @@ export class ProductsService {
 
     const count = result.length;
     return { count: count, data: result };
+  }
+
+  // With redis v0.1
+  async findAllWithRedis() {
+    const cachedResult = await this.cacheManager.get('allProducts');
+    if (cachedResult) {
+      console.log(`result from Redis :D `)
+      return cachedResult;
+    }
+    const result = await this.productRepository.find();
+    await this.cacheManager.set('allProducts', result, 2)
+
+    console.log(`normal result`)
+    return result;
   }
 
   // // 상품 리스트 전체 조회 (Query builder)

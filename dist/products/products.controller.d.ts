@@ -7,6 +7,7 @@ export declare class ProductsController {
         count: number;
         data: import("./entities/product.entity").ProductEntity[];
     }>;
+    findAllWithRedis(): Promise<unknown>;
     findOne(productId: any): Promise<import("./entities/product.entity").ProductEntity>;
     remove(productId: any): Promise<void>;
 }

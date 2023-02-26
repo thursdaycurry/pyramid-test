@@ -5,3 +5,4 @@ export class CreateBidDto {
   raffleId: number; // Bid | M : 1 | Raffle
   userId: number; // Bid | M : 1 | User
 }
+

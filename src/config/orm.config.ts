@@ -12,7 +12,11 @@ export default class TypeOrmConfig {
       database: configService.get('RDS_DATABASE_NAME'),
       entities: [__dirname + '/../**/*.entity{.ts,.js}'],
       synchronize: true,
-      logging: false,
+      logging: ['log'],
+      maxQueryExecutionTime: 50, // log if one query run over 1000ms time
+      extra: {
+        statement_timeout: 500
+      }
     };
   }
 }

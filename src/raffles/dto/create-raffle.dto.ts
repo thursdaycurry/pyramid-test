@@ -5,5 +5,5 @@ export class CreateRaffleDto {
   dateStart: string;
   dateEnd: string;
   isClosed?: boolean;
-  finalPrice?: number;
+  closedPrice?: number;
 }

@@ -7,7 +7,7 @@ export declare class RafflesController {
     constructor(rafflesService: RafflesService);
     create(createRaffleDto: any): Promise<any>;
     findAll(): Promise<import("./entities/raffle.entity").RaffleEntity[]>;
-    test(): Promise<import("./entities/raffle.entity").RaffleEntity[]>;
+    findAllWithRedis(): Promise<unknown>;
     findOne(id: any): Promise<{
         data: import("./entities/raffle.entity").RaffleEntity;
         raffleHistory: import("./entities/raffle.entity").RaffleEntity[];

@@ -12,8 +12,22 @@ export class BidsService {
   }
 
   findAll() {
-    return this.bidRepository.find();
+    return this.bidRepository.find({
+      relations: {
+        raffle: true,
+        user: true
+      }
+    });
   }
+
+      // const result = await this.raffleRepository.find({
+    //   where: { isClosed: false },
+    //   relations: {
+    //     product: true,
+    //     bid: true,
+    //     user: true,
+    //   },
+    // });
 
   remove(bidId: number) {
     return this.bidRepository.delete({ bidId }); 

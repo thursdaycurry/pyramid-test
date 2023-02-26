@@ -18,12 +18,41 @@ const typeorm_1 = require("typeorm");
 const raffle_entity_1 = require("./entities/raffle.entity");
 const typeorm_2 = require("@nestjs/typeorm");
 let RafflesService = class RafflesService {
-    constructor(raffleRepository) {
+    constructor(raffleRepository, cacheManager) {
         this.raffleRepository = raffleRepository;
+        this.cacheManager = cacheManager;
     }
     create(raffle) {
         console.log(`raffle create: ${JSON.stringify(raffle)}`);
         return this.raffleRepository.save(raffle);
+    }
+    async findAllWithRedis() {
+        const cachedResult = await this.cacheManager.get('findAllRaffles');
+        if (cachedResult) {
+            console.log(`Raffle result from Redis :D `);
+            return cachedResult;
+        }
+        const result = await this.raffleRepository
+            .createQueryBuilder('raffle')
+            .leftJoinAndSelect('raffle.product', 'product')
+            .leftJoinAndSelect('raffle.bid', 'bid')
+            .select([
+            'raffle.raffleId',
+            'product.productImage',
+            'product.productColor',
+            'product.productModel',
+            'product.productName',
+            'product.releasePrice',
+            'raffle.dateEnd',
+            'bid.bidId'
+        ])
+            .orderBy('raffle.dateEnd', 'DESC')
+            .addOrderBy('raffle.raffleId', 'DESC')
+            .take(10)
+            .getMany();
+        await this.cacheManager.set('findAllRaffles', result);
+        console.log(`normal result`);
+        return result;
     }
     async findAll() {
         const result = await this.raffleRepository
@@ -89,7 +118,8 @@ let RafflesService = class RafflesService {
 RafflesService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_2.InjectRepository)(raffle_entity_1.RaffleEntity)),
-    __metadata("design:paramtypes", [typeorm_1.Repository])
+    __param(1, (0, common_1.Inject)(common_1.CACHE_MANAGER)),
+    __metadata("design:paramtypes", [typeorm_1.Repository, Object])
 ], RafflesService);
 exports.RafflesService = RafflesService;
 //# sourceMappingURL=raffles.service.js.map

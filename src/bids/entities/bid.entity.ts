@@ -31,7 +31,7 @@ export class BidEntity extends CommonEntity {
   @ManyToOne(() => RaffleEntity, raffle => raffle.bid)
   @JoinColumn({ name: 'raffleId' })
   raffle: RaffleEntity;
-
+  
   /**
    * Bid | M : 1 | User
    * 유저 1명에 다수의 비즈를 생성할 수 있다

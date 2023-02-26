@@ -1,8 +1,10 @@
 import {
   Body,
+  CACHE_MANAGER,
   Controller,
   Delete,
   Get,
+  Inject,
   Param,
   ParseIntPipe,
   Patch,
@@ -13,11 +15,14 @@ import { ProductsService } from './products.service';
 
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtGuard } from '../users/jwt/jwt.guard';
+import { Cache } from 'cache-manager';
 
 @ApiTags('Products')
 @Controller('products')
 export class ProductsController {
-  constructor(private readonly productService: ProductsService) {}
+  constructor(
+    private readonly productService: ProductsService,
+  ) { }
 
   @Post()
   create(@Body() product) { // CreateProductDto
@@ -29,6 +34,11 @@ export class ProductsController {
     return this.productService.findAll();
   }
 
+  @Get('fromCache')
+  findAllWithRedis() {
+    return this.productService.findAllWithRedis();
+  }
+
   @Get(':productId')
   findOne(@Param('productId', ParseIntPipe) productId) {
     return this.productService.findOne(productId);
@@ -38,6 +48,7 @@ export class ProductsController {
   remove(@Param('productId', ParseIntPipe) productId) {
     return this.productService.remove(productId);
   }
+
 
   // @Patch(':productId')
   // update(@Param('productId') productId: string, @Body() updateProductDto: UpdateProductDto) {

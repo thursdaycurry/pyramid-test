@@ -25,7 +25,12 @@ let BidsService = class BidsService {
         this.bidRepository.save(bid);
     }
     findAll() {
-        return this.bidRepository.find();
+        return this.bidRepository.find({
+            relations: {
+                raffle: true,
+                user: true
+            }
+        });
     }
     remove(bidId) {
         return this.bidRepository.delete({ bidId });

@@ -18,8 +18,11 @@ const typeorm_1 = require("@nestjs/typeorm");
 const product_entity_1 = require("./entities/product.entity");
 const typeorm_2 = require("typeorm");
 let ProductsService = class ProductsService {
-    constructor(productRepository) {
+    constructor(productRepository, cacheManager) {
         this.productRepository = productRepository;
+        this.cacheManager = cacheManager;
+    }
+    async getOrSetCache() {
     }
     create(product) {
         this.productRepository.save(product);
@@ -28,6 +31,17 @@ let ProductsService = class ProductsService {
         const result = await this.productRepository.find();
         const count = result.length;
         return { count: count, data: result };
+    }
+    async findAllWithRedis() {
+        const cachedResult = await this.cacheManager.get('allProducts');
+        if (cachedResult) {
+            console.log(`result from Redis :D `);
+            return cachedResult;
+        }
+        const result = await this.productRepository.find();
+        await this.cacheManager.set('allProducts', result, 2);
+        console.log(`normal result`);
+        return result;
     }
     findOne(productId) {
         return this.productRepository.findOne({ where: { productId: productId } });
@@ -40,7 +54,8 @@ let ProductsService = class ProductsService {
 ProductsService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(product_entity_1.ProductEntity)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __param(1, (0, common_1.Inject)(common_1.CACHE_MANAGER)),
+    __metadata("design:paramtypes", [typeorm_2.Repository, Object])
 ], ProductsService);
 exports.ProductsService = ProductsService;
 //# sourceMappingURL=products.service.js.map

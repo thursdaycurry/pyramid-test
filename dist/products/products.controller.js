@@ -26,6 +26,9 @@ let ProductsController = class ProductsController {
     findAll() {
         return this.productService.findAll();
     }
+    findAllWithRedis() {
+        return this.productService.findAllWithRedis();
+    }
     findOne(productId) {
         return this.productService.findOne(productId);
     }
@@ -46,6 +49,12 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], ProductsController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)('fromCache'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], ProductsController.prototype, "findAllWithRedis", null);
 __decorate([
     (0, common_1.Get)(':productId'),
     __param(0, (0, common_1.Param)('productId', common_1.ParseIntPipe)),
