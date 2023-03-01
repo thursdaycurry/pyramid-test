@@ -6,11 +6,15 @@ import { RaffleEntity } from './entities/raffle.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cache } from 'cache-manager';
 
+import { InjectRedis, DEFAULT_REDIS_NAMESPACE } from '@liaoliaots/nestjs-redis';
+import Redis from 'ioredis';
+
 @Injectable()
 export class RafflesService {
   constructor(
     @InjectRepository(RaffleEntity) private readonly raffleRepository: Repository<RaffleEntity>,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    @InjectRedis() private readonly redis: Redis,
   ) { }
 
   create(raffle) {
@@ -51,9 +55,38 @@ export class RafflesService {
   }
 
     // raffle - findAll v0.2
-    async findAllWithRedisCloud() {
-      const client = 'hlello'
-      return client
+  async findAllWithRedisCloud() {
+    
+    const cachedResult = await this.redis.get('raffles');
+    
+    if (cachedResult) {
+      console.log(`Raffle result from Redis :D `)
+      return JSON.parse(cachedResult);
+    }
+    const result = await this.raffleRepository
+      .createQueryBuilder('raffle')
+      .leftJoinAndSelect('raffle.product', 'product')
+      .leftJoinAndSelect('raffle.bid', 'bid')
+      .select([
+        'raffle.raffleId',
+        'product.productImage',
+        'product.productColor',
+        'product.productModel',
+        'product.productName',
+        'product.releasePrice',
+        'raffle.dateEnd',
+        'bid.bidId'
+      ])
+      .orderBy('raffle.dateEnd', 'DESC')
+      .addOrderBy('raffle.raffleId', 'DESC')
+      .take(10)
+      .getMany();
+    
+    await this.redis.set('raffles', JSON.stringify(result), 'EX', 10)
+
+    console.log(`normal result`)
+    return result;
+      
     }
 
   // 래플 리스트 전체 조회

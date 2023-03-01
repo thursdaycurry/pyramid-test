@@ -26,6 +26,7 @@
   "dependencies": {
     "@aws-sdk/types": "^3.266.0",
     "@jridgewell/sourcemap-codec": "^1.4.14",
+    "@liaoliaots/nestjs-redis": "^9.0.5",
     "@nestjs/class-validator": "^0.13.4",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.3.0",
@@ -56,6 +57,7 @@
     "dotenv": "^16.0.3",
     "esm": "^3.2.25",
     "hbs": "^4.2.0",
+    "ioredis": "^5.3.1",
     "mysql2": "^2.3.3",
     "passport-jwt": "^4.0.1",
     "pg": "^8.9.0",

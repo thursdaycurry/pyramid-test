@@ -16,7 +16,7 @@ import { BidsModule } from './bids/bids.module';
       isGlobal: true,
     }),
     TypeOrmModule.forRootAsync(typeOrmConfigAsync),
-    
+  
     RaffleModule,
     UsersModule,
     ProductModule,
