@@ -17,12 +17,10 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
 const raffle_entity_1 = require("./entities/raffle.entity");
 const typeorm_2 = require("@nestjs/typeorm");
-const nestjs_redis_1 = require("nestjs-redis");
 let RafflesService = class RafflesService {
-    constructor(raffleRepository, cacheManager, redisService) {
+    constructor(raffleRepository, cacheManager) {
         this.raffleRepository = raffleRepository;
         this.cacheManager = cacheManager;
-        this.redisService = redisService;
     }
     create(raffle) {
         console.log(`raffle create: ${JSON.stringify(raffle)}`);
@@ -57,7 +55,7 @@ let RafflesService = class RafflesService {
         return result;
     }
     async findAllWithRedisCloud() {
-        const client = await this.redisService.getClient('test');
+        const client = 'hlello';
         return client;
     }
     async findAll() {
@@ -122,7 +120,7 @@ RafflesService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_2.InjectRepository)(raffle_entity_1.RaffleEntity)),
     __param(1, (0, common_1.Inject)(common_1.CACHE_MANAGER)),
-    __metadata("design:paramtypes", [typeorm_1.Repository, Object, nestjs_redis_1.RedisService])
+    __metadata("design:paramtypes", [typeorm_1.Repository, Object])
 ], RafflesService);
 exports.RafflesService = RafflesService;
 //# sourceMappingURL=raffles.service.js.map

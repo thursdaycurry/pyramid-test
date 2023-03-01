@@ -16,7 +16,6 @@ const user_entity_1 = require("../users/entities/user.entity");
 const bid_entity_1 = require("../bids/entities/bid.entity");
 const raffles_gateway_1 = require("./raffles.gateway");
 const redisStore = require("cache-manager-ioredis");
-const nestjs_redis_1 = require("nestjs-redis");
 let RaffleModule = class RaffleModule {
 };
 RaffleModule = __decorate([
@@ -30,12 +29,6 @@ RaffleModule = __decorate([
                 max: 100,
                 ttl: 1200,
             }),
-            nestjs_redis_1.RedisModule.register({
-                host: process.env.REDIS_HOST,
-                port: parseInt(process.env.REDIS_PORT),
-                db: parseInt(process.env.REDIS_DB),
-                password: process.env.REDIS_PASSWORD,
-            })
         ],
         controllers: [raffles_controller_1.RafflesController],
         providers: [raffles_service_1.RafflesService, raffles_gateway_1.RafflesGateway],
