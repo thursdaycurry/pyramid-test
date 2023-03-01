@@ -8,10 +8,7 @@ export declare class RafflesService {
     create(raffle: any): Promise<any>;
     findAllWithRedis(): Promise<unknown>;
     findAll(): Promise<RaffleEntity[]>;
+    findOne(id: number): Promise<RaffleEntity>;
     test(): Promise<RaffleEntity[]>;
-    findOne(id: number): Promise<{
-        data: RaffleEntity;
-        raffleHistory: RaffleEntity[];
-    }>;
     remove(raffleId: number): Promise<void>;
 }

@@ -58,7 +58,6 @@ let RafflesService = class RafflesService {
         const result = await this.raffleRepository
             .createQueryBuilder('raffle')
             .leftJoinAndSelect('raffle.product', 'product')
-            .leftJoinAndSelect('raffle.bid', 'bid')
             .select([
             'raffle.raffleId',
             'product.productImage',
@@ -67,12 +66,32 @@ let RafflesService = class RafflesService {
             'product.productName',
             'product.releasePrice',
             'raffle.dateEnd',
-            'bid.bidId'
         ])
+            .loadRelationCountAndMap('raffle.bidCount', 'raffle.bid')
             .orderBy('raffle.dateEnd', 'DESC')
             .addOrderBy('raffle.raffleId', 'DESC')
             .take(10)
             .getMany();
+        return result;
+    }
+    async findOne(id) {
+        const result = await this.raffleRepository
+            .createQueryBuilder('raffle')
+            .leftJoinAndSelect('raffle.product', 'product')
+            .where('raffle.raffleId = :id', { id: id })
+            .select([
+            'raffle.raffleId',
+            'product.productImage',
+            'product.productColor',
+            'product.productModel',
+            'product.productName',
+            'product.releasePrice',
+            'raffle.dateEnd',
+        ])
+            .loadRelationCountAndMap('raffle.bidCount', 'raffle.bid')
+            .orderBy('raffle.dateEnd', 'DESC')
+            .addOrderBy('raffle.raffleId', 'DESC')
+            .getOne();
         return result;
     }
     async test() {
@@ -87,28 +106,6 @@ let RafflesService = class RafflesService {
             return 'raffle.raffleId IN ' + subQuery;
         })
             .getMany();
-        return result;
-    }
-    async findOne(id) {
-        const currentRaffle = await this.raffleRepository.findOne({
-            where: { raffleId: id },
-            relations: {
-                product: true,
-                bid: true,
-            },
-        });
-        const { product: { productId }, } = currentRaffle;
-        const previousRaffle = await this.raffleRepository.find({
-            where: {
-                product: {
-                    productId: productId,
-                },
-            },
-        });
-        const result = {
-            data: currentRaffle,
-            raffleHistory: previousRaffle,
-        };
         return result;
     }
     async remove(raffleId) {

@@ -88,7 +88,7 @@ export class RafflesService {
     const result = await this.raffleRepository
       .createQueryBuilder('raffle')
       .leftJoinAndSelect('raffle.product', 'product')
-      .leftJoinAndSelect('raffle.bid', 'bid')
+      // .leftJoinAndSelect('raffle.bid', 'bid')
       .select([
         'raffle.raffleId',
         'product.productImage',
@@ -97,8 +97,8 @@ export class RafflesService {
         'product.productName',
         'product.releasePrice',
         'raffle.dateEnd',
-        'bid.bidId'
       ])
+      .loadRelationCountAndMap('raffle.bidCount', 'raffle.bid')
       .orderBy('raffle.dateEnd', 'DESC')
       .addOrderBy('raffle.raffleId', 'DESC')
       .take(10)
@@ -106,6 +106,30 @@ export class RafflesService {
 
     return result;
   }
+
+    // 래플 리스트 전체 조회
+  async findOne(id: number) {
+    
+    const result = await this.raffleRepository
+        .createQueryBuilder('raffle')
+        .leftJoinAndSelect('raffle.product', 'product')
+         .where('raffle.raffleId = :id', { id: id })
+        .select([
+          'raffle.raffleId',
+          'product.productImage',
+          'product.productColor',
+          'product.productModel',
+          'product.productName',
+          'product.releasePrice',
+          'raffle.dateEnd',
+        ])
+        .loadRelationCountAndMap('raffle.bidCount', 'raffle.bid')
+        .orderBy('raffle.dateEnd', 'DESC')
+        .addOrderBy('raffle.raffleId', 'DESC')
+        .getOne();
+  
+      return result;
+    }
 
   async test() {
     // const result = await this.raffleRepository
@@ -233,34 +257,34 @@ export class RafflesService {
   }
   
 
-  // 특정 상품 상세 조회
-  async findOne(id: number) {
-    const currentRaffle = await this.raffleRepository.findOne({
-      where: { raffleId: id },
-      relations: {
-        product: true,
-        bid: true,
-      },
-    });
-    const {
-      product: { productId },
-    } = currentRaffle;
+  // // 특정 상품 상세 조회
+  // async findOne(id: number) {
+  //   const currentRaffle = await this.raffleRepository.findOne({
+  //     where: { raffleId: id },
+  //     relations: {
+  //       product: true,
+  //       bid: true,
+  //     },
+  //   });
+  //   const {
+  //     product: { productId },
+  //   } = currentRaffle;
 
-    // 래플들 모두 가져오는데, 조건은 해당 래플이 현재 래플에서 참조하는 productID와 같은 경우
-    const previousRaffle = await this.raffleRepository.find({
-      where: {
-        product: {
-          productId: productId,
-        },
-      },
-    });
+  //   // 래플들 모두 가져오는데, 조건은 해당 래플이 현재 래플에서 참조하는 productID와 같은 경우
+  //   const previousRaffle = await this.raffleRepository.find({
+  //     where: {
+  //       product: {
+  //         productId: productId,
+  //       },
+  //     },
+  //   });
 
-    const result = {
-      data: currentRaffle,
-      raffleHistory: previousRaffle,
-    };
-    return result;
-  }
+  //   const result = {
+  //     data: currentRaffle,
+  //     raffleHistory: previousRaffle,
+  //   };
+  //   return result;
+  // }
 
   // 특정 상품 삭제
   async remove(raffleId: number) {
