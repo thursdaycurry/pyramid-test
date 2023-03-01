@@ -38,6 +38,11 @@ export class RafflesController {
   findAllWithRedis() {
     return this.rafflesService.findAllWithRedis();
   }
+  @Get('fromCacheCloud')
+  findAllWithRedisCloud() {
+    return this.rafflesService.findAllWithRedisCloud();
+  }
+
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id) {
     return this.rafflesService.findOne(id);

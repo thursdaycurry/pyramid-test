@@ -8,6 +8,7 @@ export declare class RafflesController {
     create(createRaffleDto: any): Promise<any>;
     findAll(): Promise<import("./entities/raffle.entity").RaffleEntity[]>;
     findAllWithRedis(): Promise<unknown>;
+    findAllWithRedisCloud(): Promise<import("ioredis/built/Redis").default>;
     findOne(id: any): Promise<import("./entities/raffle.entity").RaffleEntity>;
     remove(id: any): Promise<void>;
 }

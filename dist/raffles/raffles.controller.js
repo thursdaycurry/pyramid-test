@@ -32,6 +32,9 @@ let RafflesController = class RafflesController {
     findAllWithRedis() {
         return this.rafflesService.findAllWithRedis();
     }
+    findAllWithRedisCloud() {
+        return this.rafflesService.findAllWithRedisCloud();
+    }
     findOne(id) {
         return this.rafflesService.findOne(id);
     }
@@ -58,6 +61,12 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], RafflesController.prototype, "findAllWithRedis", null);
+__decorate([
+    (0, common_1.Get)('fromCacheCloud'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], RafflesController.prototype, "findAllWithRedisCloud", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),

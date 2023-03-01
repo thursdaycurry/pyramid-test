@@ -10,7 +10,8 @@ import { Cache } from 'cache-manager';
 export class RafflesService {
   constructor(
     @InjectRepository(RaffleEntity) private readonly raffleRepository: Repository<RaffleEntity>,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache) { }
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+  ) { }
 
   create(raffle) {
     console.log(`raffle create: ${JSON.stringify(raffle)}`);
@@ -48,6 +49,12 @@ export class RafflesService {
     console.log(`normal result`)
     return result;
   }
+
+    // raffle - findAll v0.2
+    async findAllWithRedisCloud() {
+      const client = 'hlello'
+      return client
+    }
 
   // 래플 리스트 전체 조회
   async findAll() {
