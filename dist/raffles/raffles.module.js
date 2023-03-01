@@ -16,11 +16,16 @@ const user_entity_1 = require("../users/entities/user.entity");
 const bid_entity_1 = require("../bids/entities/bid.entity");
 const raffles_gateway_1 = require("./raffles.gateway");
 const redisStore = require("cache-manager-ioredis");
+const nestjs_redis_1 = require("@liaoliaots/nestjs-redis");
+const config_1 = require("@nestjs/config");
 let RaffleModule = class RaffleModule {
 };
 RaffleModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            config_1.ConfigModule.forRoot({
+                isGlobal: true,
+            }),
             typeorm_1.TypeOrmModule.forFeature([raffle_entity_1.RaffleEntity, user_entity_1.UserEntity, bid_entity_1.BidEntity, user_entity_1.UserEntity]),
             common_1.CacheModule.register({
                 store: redisStore,
@@ -29,6 +34,13 @@ RaffleModule = __decorate([
                 max: 100,
                 ttl: 1200,
             }),
+            nestjs_redis_1.RedisModule.forRoot({
+                config: {
+                    host: process.env.REDIS_HOST,
+                    port: Number(process.env.REDIS_PORT),
+                    password: process.env.REDIS_PW
+                }
+            })
         ],
         controllers: [raffles_controller_1.RafflesController],
         providers: [raffles_service_1.RafflesService, raffles_gateway_1.RafflesGateway],

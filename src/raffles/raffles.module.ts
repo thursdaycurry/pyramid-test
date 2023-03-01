@@ -9,10 +9,14 @@ import { RafflesGateway } from './raffles.gateway';
 
 import * as redisStore from 'cache-manager-ioredis';
 
-
+import { RedisModule } from '@liaoliaots/nestjs-redis';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forFeature([RaffleEntity, UserEntity, BidEntity, UserEntity]),
     CacheModule.register({
     store: redisStore,
@@ -21,6 +25,13 @@ import * as redisStore from 'cache-manager-ioredis';
     max: 100,
       ttl: 1200, // 10 seconds. 1200 20mins
     }),
+    RedisModule.forRoot({
+      config: {
+        host: process.env.REDIS_HOST,
+        port: Number(process.env.REDIS_PORT),
+        password: process.env.REDIS_PW
+      }
+    })
  ],
   controllers: [RafflesController],
   providers: [RafflesService, RafflesGateway],

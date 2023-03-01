@@ -38,6 +38,7 @@ export class RafflesController {
   findAllWithRedis() {
     return this.rafflesService.findAllWithRedis();
   }
+  
   @Get('fromCacheCloud')
   findAllWithRedisCloud() {
     return this.rafflesService.findAllWithRedisCloud();

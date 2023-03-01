@@ -14,9 +14,10 @@ import { BidsModule } from './bids/bids.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: '.env',
     }),
     TypeOrmModule.forRootAsync(typeOrmConfigAsync),
-    
+  
     RaffleModule,
     UsersModule,
     ProductModule,

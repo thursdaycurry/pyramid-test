@@ -26,6 +26,7 @@ AppModule = __decorate([
         imports: [
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
+                envFilePath: '.env',
             }),
             typeorm_1.TypeOrmModule.forRootAsync(orm_config_1.typeOrmConfigAsync),
             raffles_module_1.RaffleModule,
