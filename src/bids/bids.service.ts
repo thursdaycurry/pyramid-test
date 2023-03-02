@@ -7,10 +7,11 @@ import { Repository } from 'typeorm';
 export class BidsService {
   constructor(@InjectRepository(BidEntity) private readonly bidRepository: Repository<BidEntity>) { }
 
-  create(bid) {
-    this.bidRepository.save(bid);
+  async create(bid) {
+    await this.bidRepository.save(bid);
   }
 
+  // findAll Raw
   findAll() {
     return this.bidRepository.find({
       relations: {
@@ -19,15 +20,6 @@ export class BidsService {
       }
     });
   }
-
-      // const result = await this.raffleRepository.find({
-    //   where: { isClosed: false },
-    //   relations: {
-    //     product: true,
-    //     bid: true,
-    //     user: true,
-    //   },
-    // });
 
   remove(bidId: number) {
     return this.bidRepository.delete({ bidId }); 

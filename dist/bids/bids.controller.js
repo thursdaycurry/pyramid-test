@@ -18,8 +18,12 @@ const bids_service_1 = require("./bids.service");
 let BidsController = class BidsController {
     constructor(bidsService) {
         this.bidsService = bidsService;
+        this.createBidCount = 0;
+        this.logger = new common_1.Logger('bids');
     }
     create(bid) {
+        this.createBidCount++;
+        this.logger.log(`${this.createBidCount}번째 입찰 등록`);
         return this.bidsService.create(bid);
     }
     findAll() {

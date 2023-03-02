@@ -21,8 +21,8 @@ let BidsService = class BidsService {
     constructor(bidRepository) {
         this.bidRepository = bidRepository;
     }
-    create(bid) {
-        this.bidRepository.save(bid);
+    async create(bid) {
+        await this.bidRepository.save(bid);
     }
     findAll() {
         return this.bidRepository.find({
