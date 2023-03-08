@@ -7,5 +7,6 @@ export declare class BidsController {
     constructor(bidsService: BidsService);
     create(bid: any): Promise<void>;
     findAll(): Promise<import("./entities/bid.entity").BidEntity[]>;
+    findBySize(size: any): Promise<import("./entities/bid.entity").BidEntity[]>;
     remove(id: string): Promise<import("typeorm").DeleteResult>;
 }

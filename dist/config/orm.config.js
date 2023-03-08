@@ -16,8 +16,8 @@ class TypeOrmConfig {
             logging: ['log'],
             maxQueryExecutionTime: 50,
             extra: {
-                statement_timeout: 500
-            }
+                statement_timeout: 500,
+            },
         };
     }
 }

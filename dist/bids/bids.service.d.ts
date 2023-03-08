@@ -5,5 +5,6 @@ export declare class BidsService {
     constructor(bidRepository: Repository<BidEntity>);
     create(bid: any): Promise<void>;
     findAll(): Promise<BidEntity[]>;
+    findBySize(size: any): Promise<BidEntity[]>;
     remove(bidId: number): Promise<import("typeorm").DeleteResult>;
 }

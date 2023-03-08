@@ -23,6 +23,11 @@ export class BidsController {
   findAll() {
     return this.bidsService.findAll();
   }
+  
+  @Get(':size')
+  findBySize(@Param('size') size) {
+    return this.bidsService.findBySize(size)
+  }
 
   @Delete(':id')
   remove(@Param('id') id: string) {

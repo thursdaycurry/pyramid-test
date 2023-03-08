@@ -17,7 +17,7 @@ export default class TypeOrmConfig {
       extra: {
         statement_timeout: 500,
       },
-      poolSize: 20, // max connections
+      
     };
   }
 }

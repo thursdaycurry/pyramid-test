@@ -21,6 +21,17 @@ export class BidsService {
     });
   }
 
+  async findBySize(size) {
+    const result = await this.bidRepository
+    .createQueryBuilder('bid')
+    .select()
+    .where('bid.bidSize = :size', { size: size})
+    .getMany();
+    
+    return result;
+  }
+
+
   remove(bidId: number) {
     return this.bidRepository.delete({ bidId }); 
   } 
