@@ -40,6 +40,17 @@ let BidsService = class BidsService {
             .getMany();
         return result;
     }
+    async findByRange(sizeFrom, sizeTo) {
+        const result = await this.bidRepository
+            .createQueryBuilder('bid')
+            .select()
+            .where('bid.bidSize > :sizeFrom', { sizeFrom: sizeFrom })
+            .andWhere('bid.bidSize < :sizeTo', { sizeTo: sizeTo })
+            .orderBy('bid.bidSize', 'ASC')
+            .take(100)
+            .getMany();
+        return result;
+    }
     remove(bidId) {
         return this.bidRepository.delete({ bidId });
     }

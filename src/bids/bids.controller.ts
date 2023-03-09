@@ -21,12 +21,20 @@ export class BidsController {
 
   @Get()
   findAll() {
+    this.logger.log('findAll is triggered');
     return this.bidsService.findAll();
   }
   
   @Get(':size')
-  findBySize(@Param('size') size) {
-    return this.bidsService.findBySize(size)
+  async findBySize(@Param('size') size) {
+    this.logger.log('size logger is triggered');
+    return await this.bidsService.findBySize(size);
+  }
+
+  @Get('range/:sizeFrom/:sizeTo')
+  async findByRange(@Param('sizeFrom') sizeFrom, @Param('sizeTo') sizeTo) {
+    this.logger.log('findByRange logger is triggered');
+    return await this.bidsService.findByRange(sizeFrom, sizeTo);
   }
 
   @Delete(':id')

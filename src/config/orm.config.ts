@@ -15,7 +15,7 @@ export default class TypeOrmConfig {
       logging: ['log'],
       maxQueryExecutionTime: 50, // log if one query run over 1000ms time
       extra: {
-        statement_timeout: 500,
+        // statement_timeout: 500,
       },
       
     };

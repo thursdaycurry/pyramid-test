@@ -27,10 +27,16 @@ let BidsController = class BidsController {
         return this.bidsService.create(bid);
     }
     findAll() {
+        this.logger.log('findAll is triggered');
         return this.bidsService.findAll();
     }
-    findBySize(size) {
-        return this.bidsService.findBySize(size);
+    async findBySize(size) {
+        this.logger.log('size logger is triggered');
+        return await this.bidsService.findBySize(size);
+    }
+    async findByRange(sizeFrom, sizeTo) {
+        this.logger.log('findByRange logger is triggered');
+        return await this.bidsService.findByRange(sizeFrom, sizeTo);
     }
     remove(id) {
         return this.bidsService.remove(+id);
@@ -54,8 +60,16 @@ __decorate([
     __param(0, (0, common_1.Param)('size')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], BidsController.prototype, "findBySize", null);
+__decorate([
+    (0, common_1.Get)('range/:sizeFrom/:sizeTo'),
+    __param(0, (0, common_1.Param)('sizeFrom')),
+    __param(1, (0, common_1.Param)('sizeTo')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], BidsController.prototype, "findByRange", null);
 __decorate([
     (0, common_1.Delete)(':id'),
     __param(0, (0, common_1.Param)('id')),

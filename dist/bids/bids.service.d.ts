@@ -6,5 +6,6 @@ export declare class BidsService {
     create(bid: any): Promise<void>;
     findAll(): Promise<BidEntity[]>;
     findBySize(size: any): Promise<BidEntity[]>;
+    findByRange(sizeFrom: any, sizeTo: any): Promise<BidEntity[]>;
     remove(bidId: number): Promise<import("typeorm").DeleteResult>;
 }

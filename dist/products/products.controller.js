@@ -29,8 +29,8 @@ let ProductsController = class ProductsController {
     findAllWithRedis() {
         return this.productService.findAllWithRedis();
     }
-    findOne(productId) {
-        return this.productService.findOne(productId);
+    async findOne(productId) {
+        return await this.productService.findOne(productId);
     }
     remove(productId) {
         return this.productService.remove(productId);
@@ -60,7 +60,7 @@ __decorate([
     __param(0, (0, common_1.Param)('productId', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], ProductsController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Delete)(':productId'),

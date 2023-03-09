@@ -40,8 +40,8 @@ export class ProductsController {
   }
 
   @Get(':productId')
-  findOne(@Param('productId', ParseIntPipe) productId) {
-    return this.productService.findOne(productId);
+  async findOne(@Param('productId', ParseIntPipe) productId) {
+    return await this.productService.findOne(productId);
   }
 
   @Delete(':productId')

@@ -27,10 +27,20 @@ export class BidsService {
     .select()
     .where('bid.bidSize = :size', { size: size})
     .getMany();
-    
     return result;
   }
 
+  async findByRange(sizeFrom, sizeTo) {
+    const result = await this.bidRepository
+      .createQueryBuilder('bid')
+      .select()
+      .where('bid.bidSize > :sizeFrom', { sizeFrom: sizeFrom })
+      .andWhere('bid.bidSize < :sizeTo', { sizeTo: sizeTo })
+      .orderBy('bid.bidSize', 'ASC')
+      .take(100)
+      .getMany()
+    return result;
+  }
 
   remove(bidId: number) {
     return this.bidRepository.delete({ bidId }); 

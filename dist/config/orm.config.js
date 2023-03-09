@@ -15,9 +15,7 @@ class TypeOrmConfig {
             synchronize: true,
             logging: ['log'],
             maxQueryExecutionTime: 50,
-            extra: {
-                statement_timeout: 500,
-            },
+            extra: {},
         };
     }
 }
